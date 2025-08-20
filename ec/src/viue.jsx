@@ -5,6 +5,7 @@ import All from './index'
 import Layout from './Layout'
 import Register from './register'
 import Chat from './Chat'
+import ErrorBoundary from './e'
 const Viue = () => {
     const router = createBrowserRouter([{         
         path: "/",
@@ -16,7 +17,8 @@ const Viue = () => {
         },
         {
             path:"/",
-            element:<All/>
+            element:<All/>,
+            errorElement:<ErrorBoundary/>
         },
         {
             path:"/register",
