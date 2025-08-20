@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState } from "react";
 import Cookies from "js-cookie";
 
-const API_URL = 'http://localhost:5001';
+const API_URL = 'https://chat-app-5rqd.onrender.com';
 
 const register = () => {
   const [name,setName]=useState("")
