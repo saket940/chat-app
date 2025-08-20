@@ -4,12 +4,10 @@ import Login from './login'
 import All from './index'
 import Layout from './Layout'
 import Register from './register'
-import ErrorBoundary from './ErrorBoundary'
 const Viue = () => {
     const router = createBrowserRouter([{         
         path: "/",
         element: <Layout />, // Use Layout as the wrapper
-        errorElement: <ErrorBoundary />,
         children: [
         {
             path:"/login",
@@ -30,4 +28,5 @@ const Viue = () => {
 <><RouterProvider router={router}/></>
   )
 }
+
 export default Viue;
