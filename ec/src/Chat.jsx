@@ -19,55 +19,57 @@ const Chat = () => {
   const self = jwtDecode(token);
 
   useEffect(() => {
-    // Ensure conversation
-    fetch(`${API_URL}/conversations/ensure`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
-      body: JSON.stringify({ otherUserId: userId })
-    }).then(r => r.json()).then(async ({ conversationId: cid }) => {
-      setConversationId(cid);
-      // Load history
-      const res = await fetch(`${API_URL}/conversations/${cid}/messages`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      const data = await res.json();
-      setMessages(data);
-      // connect socket
-      if (!socket) socket = io(API_URL);
-      socket.emit('user:online', self.id);
-
-      socket.on('message:new', (msg) => {
-        if (msg.conversationId === cid) setMessages(prev => [...prev, msg]);
-      });
-      socket.on('typing:start', ({ conversationId: c, userId: u }) => {
-        if (c !== cid || u === self.id) return;
-        setTypingUsers(prev => new Set(prev).add(u));
-      });
-      socket.on('typing:stop', ({ conversationId: c, userId: u }) => {
-        if (c !== cid || u === self.id) return;
-        setTypingUsers(prev => {
-          const n = new Set(prev);
-          n.delete(u);
-          return n;
-        });
-      });
-      socket.on('user:status', () => {});
-      socket.on('message:read', () => {});
-
-      // Mark read
-      socket.emit('message:read', { conversationId: cid, userId: self.id });
+  // Ensure conversation
+  fetch(`${API_URL}/conversations/ensure`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ otherUserId: userId })
+  }).then(r => r.json()).then(async ({ conversationId: cid }) => {
+    setConversationId(cid);
+    // Load history
+    const res = await fetch(`${API_URL}/conversations/${cid}/messages`, {
+      headers: { Authorization: `Bearer ${token}` }
     });
+    const data = await res.json();
+    setMessages(data);
+    // connect socket
+    if (!socket) socket = io(API_URL);
+    socket.emit('user:online', self.id);
 
-    return () => {
-      if (socket) {
-        socket.off('message:new');
-        socket.off('typing:start');
-        socket.off('typing:stop');
-        socket.off('user:status');
-        socket.off('message:read');
-      }
-    };
-  }, [userId]);
+    socket.on('message:new', (msg) => {
+      if (msg.conversationId === cid) setMessages(prev => [...prev, msg]);
+    });
+    socket.on('typing:start', ({ conversationId: c, userId: u }) => {
+      if (c !== cid || u === self.id) return;
+      setTypingUsers(prev => new Set(prev).add(u));
+    });
+    socket.on('typing:stop', ({ conversationId: c, userId: u }) => {
+      if (c !== cid || u === self.id) return;
+      setTypingUsers(prev => {
+        const n = new Set(prev);
+        n.delete(u);
+        return n;
+      });
+    });
+    socket.on('user:status', () => {});
+    socket.on('message:read', () => {});
+
+    // Mark read
+    socket.emit('message:read', { conversationId: cid, userId: self.id });
+  });
+
+  return () => {
+    if (socket) {
+      socket.off('message:new');
+      socket.off('typing:start');
+      socket.off('typing:stop');
+      socket.off('user:status');
+      socket.off('message:read');
+      socket.disconnect(); // ✅ fix destroy error
+      socket = null;
+    }
+  };
+}, [userId]);
 
   const handleSend = () => {
     if (!text.trim() || !conversationId) return;
@@ -106,5 +108,6 @@ const Chat = () => {
 };
 
 export default Chat;
+
 
 
