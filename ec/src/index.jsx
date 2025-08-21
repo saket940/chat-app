@@ -15,12 +15,12 @@ const Index = () => {
     const token = Cookies.get('token');
     if (!token) {
   navigate('/login');
-  return; // ✅ don’t return a value to React
-}
+  return; },// ✅ don’t return a value to React
+const user = jwtDecode(token);
 
     setSelf(user);
     fetch(`${API_URL}/users`, {
-      headers: { Authorization: `Bearer ${token}` },
+      headers: { Authorization: `Bearer ${token}` 
     })
       .then((res) => res.json())
       .then((data) => {
@@ -49,6 +49,7 @@ const Index = () => {
 };
 
 export default Index;
+
 
 
 
