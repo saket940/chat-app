@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import Cookies from 'js-cookie';
-import jwtDecode from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { io } from 'socket.io-client';
 
 const API_URL = 'https://chat-app-5rqd.onrender.com';
@@ -106,4 +106,5 @@ const Chat = () => {
 };
 
 export default Chat;
+
 
