@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
+import {Cookies} from "js-cookie";
 
 const API_URL = 'https://chat-app-5rqd.onrender.com';
 
@@ -78,4 +78,5 @@ const Login = () => {
 };
 
 export default Login;
+
 
