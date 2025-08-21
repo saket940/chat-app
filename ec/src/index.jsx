@@ -13,8 +13,11 @@ const Index = () => {
 
   useEffect(() => {
     const token = Cookies.get('token');
-    if (!token) return navigate('/login');
-    const user = jwtDecode(token);
+    if (!token) {
+  navigate('/login');
+  return; // ✅ don’t return a value to React
+}
+
     setSelf(user);
     fetch(`${API_URL}/users`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -46,5 +49,6 @@ const Index = () => {
 };
 
 export default Index;
+
 
 
