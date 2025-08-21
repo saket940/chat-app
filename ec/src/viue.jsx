@@ -4,29 +4,36 @@ import Login from './login'
 import All from './index'
 import Layout from './Layout'
 import Register from './register'
+import Chat from './Chat'   // 👈 import Chat
+
 const Viue = () => {
-    const router = createBrowserRouter([{         
-        path: "/",
-        element: <Layout />, // Use Layout as the wrapper
-        children: [
+  const router = createBrowserRouter([
+    {         
+      path: "/",
+      element: <Layout />,
+      children: [
         {
-            path:"/login",
-            element:<Login/>
+          path:"/login",
+          element:<Login/>
         },
         {
-            path:"/",
-            element:<All/>
+          path:"/",
+          element:<All/>
         },
         {
-            path:"/register",
-            element:<Register/>
+          path:"/register",
+          element:<Register/>
+        },
+        {
+          path:"/chat/:userId",   // 👈 new route
+          element:<Chat/>
         }
       ],
-},
-    ])
-  return (
-<><RouterProvider router={router}/></>
-  )
+    }
+  ])
+  
+  return <RouterProvider router={router}/>
 }
 
-export default Viue;
+export default Viue
+
